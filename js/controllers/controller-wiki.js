@@ -3,15 +3,15 @@
  */
 
 window.Grisou = window.Grisou || {};
-Grisou.WikiHelper = Grisou.WikiHelper || {};
+Grisou.WikiController = Grisou.WikiController || {};
 
 // ====================
-// Wikihelper module
+// WikiController module
 // ====================
-Grisou.WikiHelper = (function () {
+Grisou.WikiController = (function () {
 
 // private
-    var self = Grisou.WikiHelper;
+    var self = Grisou.WikiController;
     var apiUrl = '';
     var RSD_KEYWORD = "EditURI";
     
@@ -41,4 +41,4 @@ Grisou.WikiHelper = (function () {
     
     return self;
 
-}( Grisou.WikiHelper = Grisou.WikiHelper || {} ));
+}( Grisou.WikiController = Grisou.WikiController || {} ));
