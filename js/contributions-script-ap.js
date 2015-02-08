@@ -180,9 +180,9 @@ function getJsonWiki() {
   loading();
   
   user = $("#user").val();
-  Grisou.WikiHelper.setApiUrlPath($('#url').val());
-  wikiUrlApiPath = Grisou.WikiHelper.getApiUrlPath();
-  dataLoader.wikiApiUrl = Grisou.WikiHelper.setApiUrlPath(wikiUrlApiPath);
+  Grisou.WikiController.setApiUrlPath($('#url').val());
+  wikiUrlApiPath = Grisou.WikiController.getApiUrlPath();
+  dataLoader.wikiApiUrl = Grisou.WikiController.setApiUrlPath(wikiUrlApiPath);
   
   if ($("#advanced_search_elems_container").hasClass("visible_advance")) {
     wikiUrlRequest = wikiUrlApiPath + "?action=query&list=usercontribs&format=json&uclimit=" + uclimitContribution + "&ucuser=" + user +
