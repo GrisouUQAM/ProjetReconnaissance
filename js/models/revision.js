@@ -3,29 +3,27 @@
  */
 
 window.Grisou = window.Grisou || {};
-Grisou.Revision = Grisou.Revision || {};
 
 // ====================
 // Class that represent a revision in an article (article state)
 // ====================
-Grisou.Revision = (function (self, $, data) {
+Grisou.Revision = function Revision() {
 
     // private
     
     // public
-    self.title = "";
-    self.text = "";
-    self.revid = "";
-    self.user = "";
-    self.userid = "";
-    self.size = "";
-    self.sizediff = "";
-    self.pageid = "";
-    self.timestamp = "";
-    self.parentid = "";
-    self.uccontinue = "";    
+	this.title = "";
+    this.text = "";
+    this.revid = "";
+    this.user = "";
+    this.userid = "";
+    this.size = "";
+    this.sizediff = "";
+    this.pageid = "";
+    this.timestamp = "";
+    this.parentid = "";
+    this.uccontinue = "";    
     
     // methods
-    return self;
-
-}( Grisou.Article, jQuery, {} ));
+    
+}

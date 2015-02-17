@@ -7,7 +7,7 @@
 
 var wikiUrlApiPath, wiki, analysisTable, url, user, activeAjaxConnections = 0,
 tabSelected = "Articles", articleLoadEvent = false;
-var dataLoader = new WikiAPICaller("en.wikipedia.com");
+var dataController = Grisou.WikiController;
 var needNewRevisions = false;
 var advancedSearchValues;
 
@@ -129,7 +129,7 @@ function getNextUserContributions(){
     var uclimitContribution = getUclimitCourrent();
 
   var lastRev = revisions.last();
-  dataLoader.getRevisions(user, uclimitContribution, lastRev.uccontinue, advancedSearchValues, callback_Q1);
+  dataController.getRevisions(user, uclimitContribution, lastRev.uccontinue, advancedSearchValues, callback_Q1);
 }
 
 //Function called to initiate new query
@@ -157,12 +157,10 @@ function getJsonWiki() {
   loading();
   
   user = $("#user").val();
-  Grisou.WikiHelper.setApiUrlPath($('#url').val());
-  wikiUrlApiPath = Grisou.WikiHelper.getApiUrlPath();
-  dataLoader.wikiApiUrl = Grisou.WikiHelper.getApiUrlPath();
+  url = $('#url').val();
+  dataController.setApiUrlPath(url);
   
   var dateFrom = null, dateTo = null, minorEdit = false;
-
   //Read advanced search parameters
   if ($("#advanced_search_elems_container").hasClass("visible_advance")) {
     if ($("#datepicker_from").val().length > 0) {
@@ -188,9 +186,9 @@ function getJsonWiki() {
 
   //Get and show data
   if(tabSelected === "Articles") {
-	dataLoader.getRevisions(user, uclimitContribution, null, advancedSearchValues, callback_Q1);
+	dataController.getRevisions(user, uclimitContribution, null, advancedSearchValues, callback_Q1);
   }else if(tabSelected === "Talks"){
-	dataLoader.getTalks(user, callback_Q2);
+	dataController.getTalks(user, callback_Q2);
   }
 }
 
@@ -279,12 +277,12 @@ function getArticle(item) {
   
   var oldText, newText, ajaxConnCompleted = 0;
   
-  dataLoader.getArticle(revid, function storeCurrentRev(response){ 
+  dataController.getArticle(revid, function storeCurrentRev(response){ 
 		newText = response;
 		++ajaxConnCompleted; 
 	});
 
-  dataLoader.getArticle(parentid, function storeParentRev(response){ 
+  dataController.getArticle(parentid, function storeParentRev(response){ 
 		oldText = response; 
 		++ajaxConnCompleted;
 	});
@@ -305,170 +303,4 @@ function getArticle(item) {
 		}
 		, 500); //500ms intervals
 }
-
-
-/*
-   Data Access Class to wiki
-*/
-function WikiAPICaller(url){
-	this.wikiApiUrl = url;	
-	
-   	//Returns String of parsed text in callback function
-	this.getArticle = function(revid, callback){
-		if(!revid){
-			callback(null);
-			return;
-		}
-		
-		if(!callback){
-			callback(null);
-			return;
-		}
-
-		var wikiUrlRequest = this.wikiApiUrl + "?action=parse&format=json&oldid=" + revid + "&prop=text"
-
-		doGet(wikiUrlRequest, function getArticleTextAsync(response){
-			var text = response.parse.text["*"];
-			callback(text);
-		});
-	}
-
-	/*
-	Returns array of Revision in parameter for callback function
-	uccontinue <= null for first call.
-	parameters is an object defined:
-		{ 
-		  dateFrom : date,
-		  dateTo : date, 
-		  hideMinorEdits : true/False  
-		}
-	*/
-	this.getRevisions = function(user, limit, uccontinue, parameters, callback){
-		var uclimitContribution = getUclimitCourrent();
-
-		if (!limit || isNaN(limit)) {
-			limit = 10;
-		}
-
-		var wikiUrlRequest = this.wikiApiUrl + "?action=query&list=usercontribs&format=json&uclimit=" 
-			+ limit + "&ucuser=" + user;
-
-		if(parameters){
-			if(parameters.dateFrom && parameters.dateFrom instanceof Date){
-				//Revisions are displayed in Desc order
-				//ucend represent the first date
-				wikiUrlRequest += "&ucend=" + parameters.dateFrom.toISOString();
-			} 
-
-			if(parameters.dateTo && parameters.dateTo instanceof Date){
-				//Revisions are displayed in Desc order
-				//ucstart represent the last date
-				wikiUrlRequest += "&ucstart=" + parameters.dateTo.toISOString();
-			}
-			
-			if(parameters.hideMinorEdits){
-				wikiUrlRequest += "&ucshow=!minor";
-			}
-		}
-
-		wikiUrlRequest += "&ucdir=older&ucnamespace=0&ucprop=ids%7Ctitle%7Ctimestamp%7Ccomment%7Csize%7Csizediff&converttitles=";
-		
-		if (!uccontinue){
-			wikiUrlRequest += "&continue=";
-		} else {
-			wikiUrlRequest += "&continue=-||&uccontinue=" + uccontinue;
-		}
-		
-		doGet(wikiUrlRequest, function getRevisionsAsync(response){
-			var revs = new Array();
-			var uccontinueValue = response.continue.uccontinue;
-			var contribs = response.query.usercontribs;
-			for(i = 0; i < response.query.usercontribs.length; ++i){
-				var rev = new WikiRevision(contribs[i]);
-				rev.uccontinue = uccontinueValue;
-				revs.push(rev);
-			}
-			callback(revs);
-		});
-		
-	}
-	
-	//Returns array of Talk in the callback function
-	this.getTalks = function(user, callback){
-		
-		if(!user){
-			callback(new Array());
-			return;
-		}
-		
-		var wikiUrlRequest = this.wikiApiUrl + "?action=query&list=usercontribs&format=json&uclimit=500&ucuser=" + user + 
-			"&ucdir=older&ucnamespace=1&ucprop=title%7Ccomment%7Cparsedcomment";
-		
-		doGet(wikiUrlRequest, function getTalksAsync(response){
-			var talks = new Array();
-			var wikiTalks = response.query.usercontribs;
-			for(i = 0; i < wikiTalks.length; ++i){
-				var talk = new WikiTalk(wikiTalks[i]);
-				talks.push(talk);
-			}
-			callback(talks);
-		});
-		
-	}
-
-	function doGet(url, callback) {
-	  $.ajax({
-	    url: url,
-	    dataType: "jsonp",
-	    type: 'GET',
-	    success: function(response){
-		callback(response)		
-		} 
-	  });
-	}
-}
-
-function Revision(){
-	this.title = "";
-	this.text = "";
-	this.revid = "";
-	this.user = "";
-	this.userid = "";
-	this.size = "";
-	this.sizediff = "";
-	this.pageid = "";
-	this.timestamp = "";
-	this.parentid = "";
-	this.uccontinue = "";
-}
-
-function WikiRevision(contribElem){
-	var ret = new Revision();
-	ret.title = contribElem.title;
-	ret.text = contribElem.text;
-	ret.revid = contribElem.revid;
-	ret.user = contribElem.user;
-	ret.userid = contribElem.userid;
-	ret.size = contribElem.size;
-	ret.sizediff = contribElem.sizediff;
-	ret.pageid = contribElem.pageid;
-	ret.timestamp = contribElem.timestamp;
-	ret.parentid = contribElem.parentid;
-	ret.uccontinue = "";
-	
-	return ret;
-}
-
-function WikiTalk(contribElem){
-	var ret = new Talk();
-	ret.title = contribElem.title;
-	ret.comment = contribElem.comment;
-	return ret;
-}
-
-function Talk(){
-	this.title = "";
-	this.comment = "";
-}
-
 
