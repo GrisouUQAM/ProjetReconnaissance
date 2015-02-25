@@ -1,0 +1,42 @@
+/**/jQuery18205720631652654159_1424888620929(
+{
+    "query": {
+        "usercontribs": [
+            {
+                "comment": "/* The Church of Scientology's position on Xenu */",
+                "ns": 0,
+                "pageid": 46634,
+                "parentid": 185448365,
+                "revid": 185449413,
+                "size": 45708,
+                "sizediff": 154,
+                "timestamp": "2008-01-19T16:51:52Z",
+                "title": "Xenu",
+                "user": "Chris087",
+                "userid": "6234308"
+            },
+            {
+                "comment": "",
+                "ns": 0,
+                "pageid": 46634,
+                "parentid": 185436870,
+                "revid": 185448365,
+                "size": 45554,
+                "sizediff": 18,
+                "timestamp": "2008-01-19T16:46:20Z",
+                "title": "Xenu",
+                "user": "Chris087",
+                "userid": "6234308"
+            }
+        ]
+    },
+    "warnings": {
+        "main": {
+            "*": "Unrecognized parameter: '_'"
+        },
+        "query": {
+            "*": "Formatting of continuation data will be changing soon. To continue using the current formatting, use the 'rawcontinue' parameter. To begin using the new format, pass an empty string for 'continue' in the initial query."
+        }
+    }
+}
+)
