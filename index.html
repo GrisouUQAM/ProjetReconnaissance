@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8"?>
 <title>Grisou | Wiki contributions Project version E2014</title>
 <link rel="stylesheet" href="css/style.css" />
 <link rel="stylesheet"
@@ -15,12 +16,21 @@
 		<div id="search_div">
 			<input class="input" type="text" id="user" value="gestion.grisou"
 				placeholder="Username or ip of the contributor"
-				title="Enter the username or ip address of the contributor." /> <input
-				class="input" type="text" id="url" value="wiki.grisou.ca"
+				title="Enter the username or ip address of the contributor.">
+            </input>
+            <select class="input" id="url" placeholder="Wikipedia web site" name="url"
+				title="Enter the url for the wikipedia web site the contributor has contributed to (without the http://), Example: en.wikipedia.org">
+                <option value="en.wikipedia.org" selected="selected">en.wikipedia.org</option>
+                <option value="wiki.grisou.ca" >wiki.grisou.ca</option>
+            </select>
+            
+            <!--input class="input" type="text" id="url" value="wiki.grisou.ca"
 				placeholder="Wikipedia web site"
-				title="Enter the url for the wikipedia web site the contributor has contributed to (without the http://), Example: en.wikipedia.org" />
+				title="Enter the url for the wikipedia web site the contributor has contributed to (without the http://), Example: en.wikipedia.org">
+            </input-->
+                
 			<button id="btn_send" onclick="getJsonWiki();">Send</button>
-		</div>
+        </div>
 		<div id="advanced_search_container">
 			<div id="advance_search_box">
 				<div id="advanced_search_elems_container" class="hidden_advance">
@@ -64,17 +74,22 @@
 				<div id="article">...</div>
 			</div>
 		</div>
-		<!-- Models -->
-		<script src="js/models/revision.js"></script>
-		<script src="js/models/talk.js"></script>
 		<!-- Controllers -->
 		<script src="js/controllers/controller-wiki.js"></script>
 		<script src="js/contributions-diff.js"></script>
+		
 		<!-- Externals -->
 		<script src="js/externals/jquery-1.8.2.min.js"></script>
 		<script src="js/externals/jquery-ui.js"></script>
 		<script src="js/externals/diff_match_patch.js"></script>
-		<!-- Views -->
+        
+        <!-- Models -->
+        <script src="js/models/article.js"></script>
+		<script src="js/models/revision.js"></script>
+		<script src="js/models/talk.js"></script>
+		
+				<!-- Views -->
 		<script src="js/contributions-script-ap.js"></script>
+        <script src="js/views/view.js"></script>
 </body>
 </html>

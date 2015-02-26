@@ -6,7 +6,7 @@ window.Grisou = window.Grisou || {};
 Grisou.Article = Grisou.Article || {};
 
 // ====================
-// Module pattern
+// Module Article
 // ====================
 Grisou.Article = (function (self, $, data) {
 

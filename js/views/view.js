@@ -3,15 +3,15 @@
  */
 
 window.Grisou = window.Grisou || {};
-Grisou.ModulePattern = Grisou.ModulePattern || {};
+Grisou.View = Grisou.View || {};
 
 // ====================
-// Module pattern
+// Module view
 // ====================
-Grisou.ModulePattern = (function (self, $, data) {
+Grisou.View = (function (self, $, data) {
 
     //    not required when augmentation is used through parameter
-    //    var self = Grisou.WikiHelper;
+    //    var self = Grisou.View;
     // private
     var variable1 = 'variable1';
     
@@ -33,4 +33,4 @@ Grisou.ModulePattern = (function (self, $, data) {
     
     return self;
 
-}( Grisou.ModulePattern, jQuery, {} ));
+}( Grisou.View, jQuery, {} ));
