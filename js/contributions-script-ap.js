@@ -35,8 +35,8 @@ function clearScreen() {
 }
 
 function stopLoading() {
-  $("#loading").attr("src", "");
-  $("#loading").hide();
+  $("#article_loading").attr("src", "");
+  $("#article_loading").hide();
 }
 
 function doNext(elem, curIndex) {
@@ -48,16 +48,10 @@ function doNext(elem, curIndex) {
 }
 
 function loading() {
-  var parent_height = $('#loading').parent().height();
-  var image_height = $('#loading').height();
-  var parent_width = $('#loading').parent().width();
-  var image_width = $('#loading').width();
-  var top_margin = (parent_height - image_height) / 2;
-  var left_margin = (parent_width - image_width) / 2;
-  $('#loading').css('margin-top', top_margin);
-  $('#loading').css('margin-left', left_margin);
-  $("#loading").attr("src", "images/465.gif");
-  $("#loading").show();
+  var img = $("<img />");
+  img.attr("src", "images/465.gif");
+  img.attr("alt", "Loading");
+  img.appendTo("#article_loading");
 }
 
 //Function that display revisions data
