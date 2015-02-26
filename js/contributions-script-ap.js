@@ -5,8 +5,7 @@
  * Revision Fev 2014 AP et AS
  */
 
-var wikiUrlApiPath, wiki, analysisTable, url, user, activeAjaxConnections = 0,
-tabSelected = "Articles", articleLoadEvent = false;
+var wikiUrlApiPath, wiki, analysisTable, url, user, activeAjaxConnections = 0;
 var dataController = Grisou.WikiController;
 var needNewRevisions = false;
 var advancedSearchValues;
@@ -25,20 +24,6 @@ Array.prototype.last = function returnLastItem(){
 }
 
 
-function clearScreen() {
-  if(tabSelected === "Articles"){
-    $("#articles").html("");
-    $("#titre").html("");
-  }else if(tabSelected === "Talks"){
-    $("#talks").html("");
-  }
-}
-
-function stopLoading() {
-  $("#article_loading").attr("src", "");
-  $("#article_loading").hide();
-}
-
 function doNext(elem, curIndex) {
   $(elem.children()[curIndex++]).animate({
     top: "0%"
@@ -47,12 +32,6 @@ function doNext(elem, curIndex) {
   });
 }
 
-function loading() {
-  var img = $("<img />");
-  img.attr("src", "images/465.gif");
-  img.attr("alt", "Loading");
-  img.appendTo("#article_loading");
-}
 
 //Function that display revisions data
 function callback_Q1(data) {
@@ -89,7 +68,7 @@ function callback_Q1(data) {
       revisions.push(data[i]);
   }
   $("#total_score_contr").text(totalVal);
-  stopLoading();
+  Grisou.View.stopLoading();
   $("#articles").html(html_list_articles)
   doNext($("#articles"), 0);
   needNewRevisions = false;
@@ -109,7 +88,7 @@ function callback_Q2(response) {
                        '<div class="list_talks_item_comment">' + response[i].comment + '</div></div>';
     }
   }
-  stopLoading();
+  Grisou.View.stopLoading();
   $("#talks").html(html_list_talks);
   doNext($("#talks"), 0);
 }
@@ -128,7 +107,7 @@ function getNextUserContributions(){
 
 //Function called to initiate new query
 function getJsonWiki() {
-  clearScreen();
+  Grisou.View.clearScreen();
   revisions.clear();
   articlesLoaded = talksLoaded = false;
   var uclimitContribution = getUclimitCourrent();
@@ -148,7 +127,7 @@ function getJsonWiki() {
     return;
   }
   
-  loading();
+  Grisou.View.loading();
   
   user = $("#user").val();
   url = $('#url').val();
@@ -179,9 +158,9 @@ function getJsonWiki() {
   } 
 
   //Get and show data
-  if(tabSelected === "Articles") {
+  if( Grisou.View.isArticleTabSelected() ) {
 	dataController.getRevisions(user, uclimitContribution, null, advancedSearchValues, callback_Q1);
-  }else if(tabSelected === "Talks"){
+  } else {
 	dataController.getTalks(user, callback_Q2);
   }
 }
@@ -218,25 +197,36 @@ $(document).ready(function () {
     }
   });
 
+  tabSelected = "Articles";
+
   $('#tabs').tabs({
-    activate: function (event, ui) {
-      if (ui.newTab.context.text === "Articles") {
-        tabSelected = "Articles";
-        $("#tab_article").animate({ left: "0%" }, 400);
-        setTimeout(function () {
-          $("#tab").css({'z-index': '1'});
-        }, 400);
-        $("#tabs").removeClass("tabs_expand");
-	getJsonWiki();
-      } else {
-        tabSelected = "Talks";
-        $("#tab_article").css({'z-index': '-1'});
-        $("#tab_article").animate({ left: "-100%", }, 400);
-        $("#tabs").addClass("tabs_expand");
-	getJsonWiki();
-      }
-    }
-  });
+     activate: function(event, ui) {
+         if (ui.newTab.context.text === "Articles") {
+             Grisou.View.setTabSelectedArticle();
+             $("#tab_article").animate({
+                 left: "0%"
+             }, 400);
+             setTimeout(function() {
+                 $("#tab").css({
+                     'z-index': '1'
+                 });
+             }, 400);
+             $("#tabs").removeClass("tabs_expand");
+             getJsonWiki();
+         } else {
+             Grisou.View.setTabSelectedTalks();
+             $("#tab_article").css({
+                 'z-index': '-1'
+             });
+             $("#tab_article").animate({
+                 left: "-100%",
+             }, 400);
+             $("#tabs").addClass("tabs_expand");
+             getJsonWiki();
+         }
+     }
+ });
+
   
   $('#tab_article').tabs();
   
@@ -262,7 +252,7 @@ $(document).ready(function () {
 
 function getArticle(item) {
   var article = "";
-  loading();
+  Grisou.View.loading();
   var title = $(item).find(".list_articles_item_title").text();
   var parentid = $(item).find(".list_articles_item_parentid").val();
   //TODO investigate why grisou.ca return a rev id = 0 as 0 is an error message.
@@ -292,9 +282,9 @@ function getArticle(item) {
 				$("#article_head").text("Article: '" + title + "' on " + $("#url").val());
 			      	$("#contr_survived").text("The contribution survived: N/A");
 			      	$("#article").html(analysisTable);
-			      	stopLoading();
+			      	Grisou.View.stopLoading();
 			}
 		}
 		, 500); //500ms intervals
-}
+};
 

@@ -13,23 +13,13 @@ Grisou.Article = (function (self, $, data) {
     //    not required when augmentation is used through parameter
     //    var self = Grisou.Article;
     // private
-    var variable1 = 'variable1';
+    var qqc = true;
     
     // public
 
-    self.method = function() {
-        return 'call to method1 from module pattern';
+    self.getArticle = function(item) {
+        return item;
     };
-
-
-    self.method2 = function (arg) {
-        return 'call to method2 from module pattern with argument ' + arg;
-    };
-    
-    self.method3 = function() {
-        return $;
-    };
-    
     
     return self;
 
