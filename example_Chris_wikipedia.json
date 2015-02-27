@@ -1,0 +1,148 @@
+/**/jQuery18209822525744172182_1425007738983(
+{
+    "batchcomplete": "",
+    "continue": {
+        "continue": "-||",
+        "uccontinue": "20140624200514|614270051"
+    },
+    "query": {
+        "usercontribs": [
+            {
+                "comment": "typo in reference 6 corrected",
+                "ns": 0,
+                "pageid": 1149999,
+                "parentid": 638630933,
+                "revid": 644324094,
+                "size": 6603,
+                "sizediff": -1,
+                "timestamp": "2015-01-26T23:27:41Z",
+                "title": "L (complexity)",
+                "user": "Chris",
+                "userid": "5429"
+            },
+            {
+                "comment": "This years award happens 20141009 in [[La Jolla]] California",
+                "ns": 0,
+                "pageid": 1989795,
+                "parentid": 625134933,
+                "revid": 628889801,
+                "size": 2367,
+                "sizediff": 26,
+                "timestamp": "2014-10-09T06:31:48Z",
+                "title": "Nierenberg Prize",
+                "user": "Chris",
+                "userid": "5429"
+            },
+            {
+                "comment": "the department of redundancy department removed a word",
+                "ns": 0,
+                "pageid": 6424379,
+                "parentid": 593133449,
+                "revid": 624712174,
+                "size": 944,
+                "sizediff": -5,
+                "timestamp": "2014-09-08T19:53:40Z",
+                "title": "Water of Life",
+                "user": "Chris",
+                "userid": "5429"
+            },
+            {
+                "comment": "Found birth year on the wikipedia page to the left.",
+                "ns": 0,
+                "pageid": 209994,
+                "parentid": 621702068,
+                "revid": 622695626,
+                "size": 24283,
+                "sizediff": 11,
+                "timestamp": "2014-08-25T04:27:44Z",
+                "title": "List of geophysicists",
+                "user": "Chris",
+                "userid": "5429"
+            },
+            {
+                "comment": "Some of the spacing seemed to need help and then I read the rest of it, improving what I could",
+                "ns": 0,
+                "pageid": 980807,
+                "parentid": 617988692,
+                "revid": 619912939,
+                "size": 21947,
+                "sizediff": 1,
+                "timestamp": "2014-08-05T04:21:21Z",
+                "title": "Lake Urmia",
+                "user": "Chris",
+                "userid": "5429"
+            },
+            {
+                "comment": "Minor creation, more details hoped for from other editors",
+                "ns": 0,
+                "pageid": 43477612,
+                "parentid": 0,
+                "revid": 619909268,
+                "size": 58,
+                "sizediff": 58,
+                "timestamp": "2014-08-05T03:33:12Z",
+                "title": "Barandouz River",
+                "user": "Chris",
+                "userid": "5429"
+            },
+            {
+                "comment": "Turning a few more things blue",
+                "ns": 0,
+                "pageid": 25577242,
+                "parentid": 567212551,
+                "revid": 617141021,
+                "size": 6387,
+                "sizediff": 4,
+                "timestamp": "2014-07-16T05:06:48Z",
+                "title": "Fred Tappert",
+                "user": "Chris",
+                "userid": "5429"
+            },
+            {
+                "comment": "Turning a few more things blue",
+                "ns": 0,
+                "pageid": 3712,
+                "parentid": 616402069,
+                "revid": 617140660,
+                "size": 34963,
+                "sizediff": 12,
+                "timestamp": "2014-07-16T05:01:19Z",
+                "title": "Bell Labs",
+                "user": "Chris",
+                "userid": "5429"
+            },
+            {
+                "comment": "Added a link to the Mitrokhin_archive",
+                "ns": 0,
+                "pageid": 41730129,
+                "parentid": 592139524,
+                "revid": 616122773,
+                "size": 545,
+                "sizediff": 37,
+                "timestamp": "2014-07-08T18:54:43Z",
+                "title": "Mitrohin",
+                "user": "Chris",
+                "userid": "5429"
+            },
+            {
+                "comment": "adding link to Churchill College",
+                "ns": 0,
+                "pageid": 6210627,
+                "parentid": 616108296,
+                "revid": 616122589,
+                "size": 37608,
+                "sizediff": 4,
+                "timestamp": "2014-07-08T18:53:15Z",
+                "title": "Mitrokhin Archive",
+                "user": "Chris",
+                "userid": "5429"
+            }
+        ]
+    },
+    "warnings": {
+        "main": {
+            "*": "Unrecognized parameter: '_'"
+        }
+    }
+}
+)
