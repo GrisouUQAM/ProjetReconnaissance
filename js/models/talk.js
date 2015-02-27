@@ -7,17 +7,16 @@ window.Grisou = window.Grisou || {};
 // ====================
 // Class that represent a talk (topic thread) element.
 // ====================
-Grisou.Talk = function () {
+Grisou.Talk = function (contribElem) {
 
     // private
 	
     // public
-    this.title = "";
-    this.comment = "";
+    this.title = contribElem.title;;
+    this.comment = contribElem.comment;;
     this.user = "";
     this.timestamp = "";
 
     //methods
     
-
 };

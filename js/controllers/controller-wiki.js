@@ -8,12 +8,13 @@ Grisou.WikiController = Grisou.WikiController || {};
 // ====================
 // WikiController module
 // ====================
-Grisou.WikiController = (function () {
+Grisou.WikiController = (function (self) {
 
 // private
-    var self = Grisou.WikiController;
     var apiUrl = '';
     var RSD_KEYWORD = "EditURI";
+    var user = '';
+    var url = '';
     
 //public
 
@@ -21,8 +22,19 @@ Grisou.WikiController = (function () {
     	return apiUrl;
     }
 
+    
+    self.getUser = function() {
+        return user;
+    };
 
-    self.setApiUrlPath = function (url) {
+
+    self.setUser = function(username) {
+        user = username;
+    }
+
+
+    self.setUrl = function(selectedUrl) {
+        url = selectedUrl;
         if ( url.substr(0,7) !== 'http://' ) {
             apiUrl = 'http://' + url;
         } 
@@ -31,21 +43,18 @@ Grisou.WikiController = (function () {
         } else {
             apiUrl = apiUrl + '/api.php';
         }
-        // verifie si existe dans la bd
+        // a faire: verifie si existe dans la bd
         // fais un appel ajax pour obtenir le fichier index.html
         // trouver la ligne qui contient le rel=RSD_KEYWORD
         // extirper le URL de l"API et le retourner.
-        return apiUrl;
     };	
 	
-   	//Returns String of parsed text in callback function
+    
+   	/**
+    * Returns String of parsed text in callback function
+    */
     self.getArticle = function(revid, callback){
-		if(!revid){
-			callback(null);
-			return;
-		}
-		
-		if(!callback){
+		if(!revid || !callback ){
 			callback(null);
 			return;
 		}
@@ -58,18 +67,20 @@ Grisou.WikiController = (function () {
 		});
 	}
 
+
 	/*
-	Returns array of Revision in parameter for callback function
-	uccontinue <= null for first call.
-	parameters is an object defined:
+	* Returns array of Revision in parameter for callback function
+	* uccontinue <= null for first call.
+	* parameters is an object defined:
 		{ 
 		  dateFrom : date,
 		  dateTo : date, 
 		  hideMinorEdits : true/False  
 		}
 	*/
-	self.getRevisions = function(user, limit, uccontinue, parameters, callback){
-		var uclimitContribution = getUclimitCourrent();
+	self.getRevisions = function(uccontinue, callback){
+        var parameters = Grisou.View.getAdvancedSearchValues();
+        var limit = Grisou.View.getUcLimitCourrent();
 		if (!limit || isNaN(limit)) {
 			limit = 10;
 		}
@@ -108,18 +119,19 @@ Grisou.WikiController = (function () {
 			var uccontinueValue = response["continue"].uccontinue;
 			var contribs = response.query.usercontribs;
 			for(i = 0; i < response.query.usercontribs.length; ++i){
-				var rev = new WikiRevision(contribs[i]);
+				var rev = new Grisou.Revision(contribs[i]);
 				rev.uccontinue = uccontinueValue;
 				revs.push(rev);
-			}
-			
+			}	
 			callback(revs);
-		});
-		
+		});		
 	}
 	
-	//Returns array of Talk in the callback function
-	self.getTalks = function(user, callback){
+    
+	/**
+    * Returns array of Talk in the callback function
+    */
+	self.getTalks = function(callback){
 		
 		if(!user){
 			callback(new Array());
@@ -133,13 +145,13 @@ Grisou.WikiController = (function () {
 			var talks = new Array();
 			var wikiTalks = response.query.usercontribs;
 			for(i = 0; i < wikiTalks.length; ++i){
-				var talk = new WikiTalk(wikiTalks[i]);
+				var talk = new Grisou.Talk(wikiTalks[i]);
 				talks.push(talk);
 			}
 			callback(talks);
 		});
-		
 	}
+
 
 	//AJAX call for requests
 	function doGet(url, callback) {
@@ -153,30 +165,6 @@ Grisou.WikiController = (function () {
 	  });
 	}
 	
-	function WikiRevision(contribElem){
-		var ret = new Grisou.Revision();
-		ret.title = contribElem.title;
-		ret.text = contribElem.text;
-		ret.revid = contribElem.revid;
-		ret.user = contribElem.user;
-		ret.userid = contribElem.userid;
-		ret.size = contribElem.size;
-		ret.sizediff = contribElem.sizediff;
-		ret.pageid = contribElem.pageid;
-		ret.timestamp = contribElem.timestamp;
-		ret.parentid = contribElem.parentid;
-		ret.uccontinue = "";
-		
-		return ret;
-	}
-
-	function WikiTalk(contribElem){
-		var ret = new Grisou.Talk();
-		ret.title = contribElem.title;
-		ret.comment = contribElem.comment;
-		return ret;
-	}
-    
     return self;
 
-}( Grisou.WikiController = Grisou.WikiController || {} ));
+}( Grisou.WikiController) );
