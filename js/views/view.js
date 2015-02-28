@@ -52,19 +52,28 @@ Grisou.View = (function(self, $, data) {
     };
 
 
-    self.loading = function() {
+    self.loading = function(selector) {
         console.log("Processing loading - spinner");
-        var img = $("<img />");
+        
+        if(!selector){
+        	selector = "#tab_article";
+        }
+        
+        var loader = $("<div/>");
+        loader.addClass("full_div_loading");
+        var img = $("<img/>");
         img.attr("src", "images/465.gif");
         img.attr("alt", "Loading");
-        img.appendTo("#article_loading");
+        
+        loader.append(img);
+        loader.appendTo(selector);
+        
     };
 
 
     self.stopLoading = function() {
        console.log("Processing stop loading - spinner");
-        $("#article_loading").attr("src", "");
-        $("#article_loading").hide();
+       	$(".full_div_loading").remove();
     };
 
 
@@ -159,12 +168,13 @@ Grisou.View = (function(self, $, data) {
             dataController.setUrl($('#url').val());
             Grisou.View.readAdvancedSearchValues();
             //Get and show data
+            Grisou.View.loading("#tabs")
+            Grisou.View.loading();
             if (Grisou.View.isArticleTabSelected()) {
                 dataController.getRevisions(Grisou.View.displayArticles);
             } else {
                 dataController.getTalks(Grisou.View.displayTalks);
             }
-            Grisou.View.stopLoading();
         }
     }
 
@@ -172,6 +182,7 @@ Grisou.View = (function(self, $, data) {
     self.displayTalks = function(response) {
         console.log("Processing display talks");
         //var usercontribs = response.query.usercontribs;
+        Grisou.View.stopLoading();
         var html_list_talks = "";
         if (response.length > 0) {
 
@@ -190,6 +201,7 @@ Grisou.View = (function(self, $, data) {
 
     self.displayArticles = function(data) {
         console.log("Processing display articles");
+        Grisou.View.stopLoading();
         var totalVal = 0;
         var html_list_articles = "";
         var lastItem = $(".last_item .list_articles_item_pageid").val();

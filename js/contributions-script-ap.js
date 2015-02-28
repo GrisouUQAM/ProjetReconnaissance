@@ -6,7 +6,6 @@
  */
 
 var dataController = Grisou.WikiController;
-//var revisions = new Array();
 
 //Adding functionnality to Array object
 Array.prototype.clear = function clearArray() {
@@ -39,11 +38,9 @@ $(document).ready(function() {
                 $("#tab_article").animate({ left: "0%"}, 400);
                 setTimeout( function() { $("#tab").css({'z-index': '1'});}, 400 );
                 $("#tabs").removeClass("tabs_expand");
-                // why Grisou.View.getJsonWiki() was here?
             } else {
                 console.log("Processing tabs event: " + event + " ui: " + ui);
                 Grisou.View.setTabSelectedTalks();
-                //$("#tab_article").css({ 'z-index': '-1' });
                 $("#tab_article").animate({ left: "-100%" }, 400);
                 $("#tabs").addClass("tabs_expand");
                 Grisou.View.getJsonWiki();
@@ -123,8 +120,8 @@ function getArticle(item) {
                 $("#article_head").text("Article: '" + title + "' on " + $("#url").val());
                 $("#contr_survived").text("The contribution survived: N/A");
                 $("#article").html(analysisTable);
+                Grisou.View.stopLoading();
             }
         }, 500
     ); //500ms intervals
-    Grisou.View.stopLoading();
 };
