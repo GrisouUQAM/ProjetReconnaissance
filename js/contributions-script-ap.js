@@ -70,7 +70,6 @@ $(document).ready(function() {
           if (!Grisou.Controller_revisions.getRevisionsNeededState()) {
               Grisou.Controller_revisions.setRevisionsNeededState(true);
               dataController.getRevisions(
-                  Grisou.Controller_revisions.getUccontinue(), 
                   Grisou.View.displayArticles
               );
           }

@@ -158,7 +158,7 @@ Grisou.View = (function(self, $, data) {
             Grisou.View.readAdvancedSearchValues();
             //Get and show data
             if (Grisou.View.isArticleTabSelected()) {
-                dataController.getRevisions(null, Grisou.View.displayArticles);
+                dataController.getRevisions(Grisou.View.displayArticles);
             } else {
                 dataController.getTalks(Grisou.View.displayTalks);
             }

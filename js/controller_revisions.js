@@ -29,6 +29,7 @@ Grisou.Controller_revisions = (function (self, $, data) {
     self.getUccontinue = function() {
         if (revisionsArray.length < 1 ) {
             console.log("ERROR: cant get uccontinue as array is empty");
+            return null;
         } else {
             var uccontinue = revisionsArray.last().uccontinue;
             console.log("processing get uccontinue:" + uccontinue);        

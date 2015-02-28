@@ -93,7 +93,7 @@ Grisou.WikiController = (function (self) {
 		  hideMinorEdits : true/False  
 		}
 	*/
-	self.getRevisions = function(uccontinue, callback){
+	self.getRevisions = function(callback){
         var parameters = Grisou.View.getAdvancedSearchValues();
         var limit = Grisou.View.getUcLimitCourrent();
 
@@ -120,6 +120,7 @@ Grisou.WikiController = (function (self) {
 
 		wikiUrlRequest += "&ucdir=older&ucnamespace=0&ucprop=ids%7Ctitle%7Ctimestamp%7Ccomment%7Csize%7Csizediff&converttitles=";
 		
+        var uccontinue = Grisou.Controller_revisions.getUccontinue();
 		if (uccontinue === null){
 			wikiUrlRequest += "&continue=";
             uccontinue = "";
