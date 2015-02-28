@@ -15,6 +15,21 @@ Grisou.WikiController = (function (self) {
     var RSD_KEYWORD = "EditURI";
     var user = '';
     var url = '';
+
+	/*
+    * AJAX call for requests
+    */
+	var doGet = function(url, callback) {
+	  $.ajax({
+	    url: url,
+	    dataType: "jsonp",
+	    type: 'GET',
+	    success: function(response){
+		callback(response)		
+		} 
+	  });
+	}
+
     
 //public
 
@@ -81,9 +96,6 @@ Grisou.WikiController = (function (self) {
 	self.getRevisions = function(uccontinue, callback){
         var parameters = Grisou.View.getAdvancedSearchValues();
         var limit = Grisou.View.getUcLimitCourrent();
-		if (!limit || isNaN(limit)) {
-			limit = 10;
-		}
 
 		var wikiUrlRequest = self.getApiUrlPath() + "?action=query&list=usercontribs&format=json&uclimit=" 
 			+ limit + "&ucuser=" + user;
@@ -108,17 +120,20 @@ Grisou.WikiController = (function (self) {
 
 		wikiUrlRequest += "&ucdir=older&ucnamespace=0&ucprop=ids%7Ctitle%7Ctimestamp%7Ccomment%7Csize%7Csizediff&converttitles=";
 		
-		if (!uccontinue){
+		if (uccontinue === null){
 			wikiUrlRequest += "&continue=";
+            uccontinue = "";
 		} else {
 			wikiUrlRequest += "&continue=-||&uccontinue=" + uccontinue;
 		}
 		
 		doGet(wikiUrlRequest, function getRevisionsAsync(response){
-			var revs = new Array();
-			var uccontinueValue = response["continue"].uccontinue;
+            console.log("Processing getRevisionAsync: " + response);
+            var revs = new Array();
+            var uccontinueValue = response.continue.uccontinue;
+            Grisou.Controller_revisions.setUccontinue(uccontinue);
 			var contribs = response.query.usercontribs;
-			for(i = 0; i < response.query.usercontribs.length; ++i){
+			for(i = 0; i < contribs.length; ++i){
 				var rev = new Grisou.Revision(contribs[i]);
 				rev.uccontinue = uccontinueValue;
 				revs.push(rev);
@@ -152,19 +167,6 @@ Grisou.WikiController = (function (self) {
 		});
 	}
 
-
-	//AJAX call for requests
-	function doGet(url, callback) {
-	  $.ajax({
-	    url: url,
-	    dataType: "jsonp",
-	    type: 'GET',
-	    success: function(response){
-		callback(response)		
-		} 
-	  });
-	}
-	
     return self;
 
 }( Grisou.WikiController) );

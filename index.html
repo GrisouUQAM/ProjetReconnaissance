@@ -4,8 +4,8 @@
     <meta charset="UTF-8"?>
 <title>Grisou | Wiki contributions Project version E2014</title>
 <link rel="stylesheet" href="css/style.css" />
-<link rel="stylesheet"
-	href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<link rel="stylesheet" href="css/jquery-ui.css">
+<!--link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" /-->
 </head>
 <body>
 	<div id="header">
@@ -24,7 +24,7 @@
                 <option value="wiki.grisou.ca" >wiki.grisou.ca</option>
             </select>
             
-			<button id="btn_send" onclick="getJsonWiki();">Send</button>
+			<button id="btn_send" onclick="Grisou.View.getJsonWiki();">Send</button>
         </div>
 		<div id="advanced_search_container">
 			<div id="advance_search_box">
@@ -69,22 +69,25 @@
 				<div id="article">...</div>
 			</div>
 		</div>
-		<!-- Controllers -->
-		<script src="js/controllers/controller-wiki.js"></script>
-		<script src="js/contributions-diff.js"></script>
-		
-		<!-- Externals -->
+
+		<!-- Externals, load first -->
 		<script src="js/externals/jquery-1.8.2.min.js"></script>
 		<script src="js/externals/jquery-ui.js"></script>
 		<script src="js/externals/diff_match_patch.js"></script>
+
+		<!-- Controllers -->
+        <script src="js/controllers/controller-wiki.js"></script>
+		<script src="js/contributions-diff.js"></script>
+		<script src="js/controller_revisions.js"></script>
+        
         
         <!-- Models -->
         <script src="js/models/article.js"></script>
 		<script src="js/models/revision.js"></script>
 		<script src="js/models/talk.js"></script>
 		
-				<!-- Views -->
-		<script src="js/contributions-script-ap.js"></script>
+		<!-- Views -->
         <script src="js/views/view.js"></script>
+		<script src="js/contributions-script-ap.js"></script>
 </body>
 </html>
