@@ -23,18 +23,12 @@ Array.prototype.last = function returnLastItem() {
 $(document).ready(function() {
     $(document).tooltip();
     $("button").button();
-    $("#datepicker_from").datepicker({
-        changeMonth: true,
-        changeYear: true
-    }).datepicker("option", "dateFormat", "yy-mm-dd");
-    $("#datepicker_to").datepicker({
-        changeMonth: true,
-        changeYear: true
-    }).datepicker("option", "dateFormat", "yy-mm-dd");
-
-    $('#url').bind( 'keypress', function(e) { Grisou.View.keyPressed(e, this)});
-    $('#user').bind('keypress', function(e) { Grisou.View.keyPressed(e, this)});
-
+    $("#datepicker_from").datepicker({ changeMonth: true, changeYear: true })
+                         .datepicker( "option", "dateFormat", "yy-mm-dd" );
+    $("#datepicker_to").datepicker({ changeMonth: true,changeYear: true })
+                       .datepicker("option", "dateFormat", "yy-mm-dd");
+    $('#url').bind('keypress', function(e) { Grisou.View.keyPressed(e, this) });
+    $('#user').bind('keypress', function(e) { Grisou.View.keyPressed(e, this) });
     Grisou.View.setTabSelectedArticle();
 
     $('#tabs').tabs({
@@ -42,17 +36,15 @@ $(document).ready(function() {
             if (ui.newTab.context.text === "Articles") {
                 console.log("Processing tabs event: " + event + " ui: " + ui);
                 Grisou.View.setTabSelectedArticle();
-                $("#tab_article").animate( {left: "0%"}, 400);
-                setTimeout( function() { $("#tab").css( {'z-index': '1'} ); }, 400 );
+                $("#tab_article").animate({ left: "0%"}, 400);
+                setTimeout( function() { $("#tab").css({'z-index': '1'});}, 400 );
                 $("#tabs").removeClass("tabs_expand");
                 // why Grisou.View.getJsonWiki() was here?
             } else {
                 console.log("Processing tabs event: " + event + " ui: " + ui);
                 Grisou.View.setTabSelectedTalks();
-                $("#tab_article").css({
-                    'z-index': '-1'
-                });
-                $("#tab_article").animate( {left: "-100%"}, 400);
+                //$("#tab_article").css({ 'z-index': '-1' });
+                $("#tab_article").animate({ left: "-100%" }, 400);
                 $("#tabs").addClass("tabs_expand");
                 Grisou.View.getJsonWiki();
             }
@@ -64,17 +56,15 @@ $(document).ready(function() {
 
     $("#articles").scroll(function(event) {
         console.log("Processing scroll");
-      var elem = $(this);
-      if (elem[0].scrollHeight - elem.scrollTop() - 100 < elem.outerHeight()) {
-          //Function that fetch more data from user revisions 
-          if (!Grisou.Controller_revisions.getRevisionsNeededState()) {
-              Grisou.Controller_revisions.setRevisionsNeededState(true);
-              dataController.getRevisions(
-                  Grisou.View.displayArticles
-              );
-          }
-      }
-  });
+        var elem = $(this);
+        if (elem[0].scrollHeight - elem.scrollTop() - 100 < elem.outerHeight()) {
+            //Function that fetch more data from user revisions 
+            if (!Grisou.Controller_revisions.getRevisionsNeededState()) {
+                Grisou.Controller_revisions.setRevisionsNeededState(true);
+                dataController.getRevisions( Grisou.View.displayArticles );
+            }
+        }
+    });
 
 
     $("#btn_advanced_search").click(function() {
@@ -103,32 +93,38 @@ function getArticle(item) {
         parentid = 1;
     }
     var revid = $(item).find(".list_articles_item_revid").val();
-
     var oldText, newText, ajaxConnCompleted = 0;
+    dataController.getArticle(
+        revid, 
+        function storeCurrentRev(response) {
+            newText = response;
+            ++ajaxConnCompleted;
+        }
+    );
 
-    dataController.getArticle(revid, function storeCurrentRev(response) {
-        newText = response;
-        ++ajaxConnCompleted;
-    });
-
-    dataController.getArticle(parentid, function storeParentRev(response) {
-        oldText = response;
-        ++ajaxConnCompleted;
-    });
+    dataController.getArticle(
+        parentid, 
+        function storeParentRev(response) {
+            oldText = response;
+            ++ajaxConnCompleted;
+        }
+    );
 
     //Waiting for ajax functions returns
-    var inter = setInterval(function getRevisions() {
-        var analysisTable = 0;
-        if (ajaxConnCompleted == 2) {
-            clearInterval(inter);
-            ajaxConnCompleted = 0;
-            //Procedure
-            analysisTable = getDiff(oldText, newText);
-            article += analysisTable;
-            $("#article_head").text("Article: '" + title + "' on " + $("#url").val());
-            $("#contr_survived").text("The contribution survived: N/A");
-            $("#article").html(analysisTable);
-        }
-    }, 500); //500ms intervals
+    var inter = setInterval(
+        function getRevisions() {
+            var analysisTable = 0;
+            if (ajaxConnCompleted == 2) {
+                clearInterval(inter);
+                ajaxConnCompleted = 0;
+                //Procedure
+                analysisTable = getDiff(oldText, newText);
+                article += analysisTable;
+                $("#article_head").text("Article: '" + title + "' on " + $("#url").val());
+                $("#contr_survived").text("The contribution survived: N/A");
+                $("#article").html(analysisTable);
+            }
+        }, 500
+    ); //500ms intervals
     Grisou.View.stopLoading();
 };

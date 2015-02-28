@@ -53,6 +53,7 @@ Grisou.View = (function(self, $, data) {
 
 
     self.loading = function() {
+        console.log("Processing loading - spinner");
         var img = $("<img />");
         img.attr("src", "images/465.gif");
         img.attr("alt", "Loading");
@@ -61,6 +62,7 @@ Grisou.View = (function(self, $, data) {
 
 
     self.stopLoading = function() {
+       console.log("Processing stop loading - spinner");
         $("#article_loading").attr("src", "");
         $("#article_loading").hide();
     };
